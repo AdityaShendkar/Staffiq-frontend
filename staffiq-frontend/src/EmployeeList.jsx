@@ -4,11 +4,7 @@ import axios from "axios";
 function EmployeeList({ onSelectEmployee }) {
   const [employees, setEmployees] = useState([]);
 
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
-  const fetchEmployees = async () => {
+  const loadEmployees = async () => {
     try {
       const response = await axios.get(
         "http://localhost:8080/employee/employees?size=100"
@@ -20,11 +16,27 @@ function EmployeeList({ onSelectEmployee }) {
     }
   };
 
+  useEffect(() => {
+    loadEmployees();
+  }, []);
+
+  const handleView = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/employee/id/${id}`
+      );
+
+      onSelectEmployee(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
-      <h2>All Employees</h2>
-        <center>
-            <table border="1">
+      <h2>Employee List</h2>
+
+      <table border="1">
         <thead>
           <tr>
             <th>ID</th>
@@ -41,13 +53,7 @@ function EmployeeList({ onSelectEmployee }) {
 
               <td>
                 <button
-                  onClick={async () => {
-                    const response = await axios.get(
-                      `http://localhost:8080/employee/id/${emp.id}`
-                    );
-
-                    onSelectEmployee(response.data);
-                  }}
+                  onClick={() => handleView(emp.id)}
                 >
                   View
                 </button>
@@ -56,8 +62,6 @@ function EmployeeList({ onSelectEmployee }) {
           ))}
         </tbody>
       </table>
-        </center>
-      
     </div>
   );
 }

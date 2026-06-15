@@ -1,30 +1,24 @@
 import { useState } from "react";
 import EmployeeList from "./EmployeeList";
-import EmployeeDetails from "./EmployeeDetails";
-import UpdateEmployee from "./UpdateEmployee";
+import EmployeeForm from "./EmployeeForm";
 
 function App() {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   return (
     <div>
-      <h1>Employee Management System</h1>
+      <center>
+        <h1>Employee Management</h1>
 
-      <EmployeeList
-        onSelectEmployee={setSelectedEmployee}
-      />
+        <EmployeeForm
+          selectedEmployee={selectedEmployee}
+          clearSelection={() => setSelectedEmployee(null)}
+        />
 
-      <hr />
+        <hr />
 
-      <EmployeeDetails
-        employee={selectedEmployee}
-      />
-
-      <hr />
-
-      <UpdateEmployee
-        employee={selectedEmployee}
-      />
+        <EmployeeList onSelectEmployee={setSelectedEmployee} />
+      </center>
     </div>
   );
 }
